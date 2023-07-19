@@ -54,8 +54,8 @@ test "arbitrary rotation":
 
 test "transform bounds":
   let
-    b1 = newBounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 1.0, 1.0))
-    b2 = newBounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 2.0, 3.0))
+    b1 = new_bounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 1.0, 1.0))
+    b2 = new_bounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 2.0, 3.0))
     s = Scale(Vec3(1.0, 2.0, 3.0))
 
   let b3 = s(b1)

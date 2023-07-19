@@ -16,7 +16,7 @@ method `$`*[S](text: ImageTexture[S]): string =
     "<ImageTexture>"
 
 
-method interaction_colour*[S](text: ImageTexture[S], interaction: SurfaceInteraction[3, 2, S]) : Colour =
+method interaction_colour*[S](text: ImageTexture[S], interaction: SurfaceInteraction[3, 2, S]): Colour =
     let uv = interaction.uv
 
     # use a basic map from uv to the images

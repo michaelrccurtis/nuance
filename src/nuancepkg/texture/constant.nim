@@ -13,5 +13,5 @@ type
 method `$`*[S](text: ConstantTexture[S]): string {.base.} =
     "<ContantTexture>"
 
-method interaction_colour*[S](text: ConstantTexture[S], interaction: SurfaceInteraction[3, 2, S]) : Colour =
+method interaction_colour*[S](text: ConstantTexture[S], interaction: SurfaceInteraction[3, 2, S]): Colour =
     result = text.colour

@@ -10,7 +10,7 @@ type
 
 proc get_pixel*(img: Image, x, y: int): Colour =
     let idx = (img.width * y) + x
-    result = Colour(arr:[
+    result = Colour(arr: [
         img.pixels[][idx][0], img.pixels[][idx][1], img.pixels[][idx][2]
     ])
 
@@ -34,7 +34,7 @@ proc make*(T: type Image, png: PNGResult[string]): Image =
     )
 
 template deref(T: typedesc[ref|ptr]): typedesc =
-  typeof(default(T)[])
+    typeof(default(T)[])
 
 proc `=destroy`*(img: var deref(Image)) =
     if img.pixels != nil:

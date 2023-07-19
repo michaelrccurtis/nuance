@@ -81,7 +81,7 @@ method get_collisions*[S](group: PrimitiveGroup[S], ray: Ray[3, S]): PrimitiveSc
         return collision_result
     return PrimitiveScatteringResult[S](collides: false)
 
-method collides*[S](group: PrimitiveGroup[S], ray: Ray[3, S]): tuple[collides:bool, index:int] {.base.} =
+method collides*[S](group: PrimitiveGroup[S], ray: Ray[3, S]): tuple[collides: bool, index: int] {.base.} =
     for idx, primitive in group.primitives:
         if primitive.collides(ray):
             return (true, idx)

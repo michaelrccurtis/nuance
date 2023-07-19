@@ -18,7 +18,7 @@ type
 
 proc `$`*[S](shape: TriangleMesh[S]): string =
     "<TriangleMesh>"
-    
+
 proc init*[S](T: typedesc[TriangleMesh[S]],
   object_to_world: Transform[4, 4, S],
   vertex_indices: openArray[int],

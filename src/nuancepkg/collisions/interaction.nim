@@ -53,12 +53,12 @@ proc `()`*[R, C, D, P, S](trans: Transform[R, C, S], act: SurfaceInteraction[D, 
 proc offset_ray_origin*[S](p: Point[3, S], p_error: Vector[3, S], n: Normal[3, S], w: Vector[3, S]): Point[3, S] =
     let d = dot(abs(n), p_error)
     var offset = d * to_vector(n)
-    
+
     if dot(w, n) < 0:
         offset = -offset
 
     result = p + offset
-    
+
     for i in 0 ..< 3:
         if offset[i] > 0:
             result[i] = next_float_up(result[i])

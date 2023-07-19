@@ -28,7 +28,7 @@ max_and_min(Vector)
 # Misc
 proc min_cpt*[D, S](vec: Vector[D, S]): S {.inline.} =
     min(vec.arr)
-    
+
 proc max_cpt*[D, S](vec: Vector[D, S]): S {.inline.} =
     max(vec.arr)
 
@@ -74,16 +74,16 @@ proc Vec3InUnitSphere*(): Vector[3, float] =
         if length(p) < 1.0:
             return p
 
-proc Vec3OnUnitSphere*(): Vector[3, float] = 
+proc Vec3OnUnitSphere*(): Vector[3, float] =
     result = norm(Vec3InUnitSphere())
 
 proc reflect*[D, S](v, n: Vector[D, S]): Vector[D, S] =
-    result = v - 2*dot(v,n)*n
+    result = v - 2*dot(v, n)*n
 
 proc refract*[D, S](uv, n: Vector[D, S], etai_over_etat: float): Vector[D, S] =
     let
         cos_theta = min(dot(-uv, n), 1.0)
-        r_out_perp =  S(etai_over_etat) * (uv + cos_theta*n)
+        r_out_perp = S(etai_over_etat) * (uv + cos_theta*n)
         r_out_parallel = -sqrt(abs(1.0 - r_out_perp.length_squared())) * n
 
     result = r_out_perp + r_out_parallel

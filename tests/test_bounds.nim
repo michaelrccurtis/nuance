@@ -9,7 +9,7 @@ suite "test bounds":
       p1 = Pt3(1.0, 0.0, 2.0)
       p2 = Pt3(-1.0, 1.0, 3.0)
 
-    let b2 = newBounds(p1, p2)
+    let b2 = new_bounds(p1, p2)
 
     check b2.pMin == Pt3(-1.0, 0.0, 2.0)
     check b2.pMax == Pt3(1.0, 1.0, 3.0)
@@ -17,7 +17,7 @@ suite "test bounds":
 
   test "bounds corner":
     let
-      b1 = newBounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 1.0, 1.0))
+      b1 = new_bounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 1.0, 1.0))
 
     check corner(b1, 0) == Pt3(0.0, 0.0, 0.0)
     check corner(b1, 1) == Pt3(1.0, 0.0, 0.0)
@@ -31,7 +31,7 @@ suite "test bounds":
 
   test "bounds union":
     let
-      b1 = newBounds(Pt3(0.0, 0.0, 0.0))
+      b1 = new_bounds(Pt3(0.0, 0.0, 0.0))
       p1 = Pt3(1.0, 1.0, 1.0)
       p2 = Pt3(3.0, 0.0, 0.0)
 
@@ -48,10 +48,10 @@ suite "test bounds":
 
   test "bounds intersection":
     let
-      b1 = newBounds(Pt3(0.0, 0.0, 0.0))
-      b2 = newBounds(Pt3(0.0, 0.0, 0.0), Pt3(2.0, 1.0, 0.0))
-      b3 = newBounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 2.0, 0.0))
-      b4 = newBounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 1.0, 0.0))
+      b1 = new_bounds(Pt3(0.0, 0.0, 0.0))
+      b2 = new_bounds(Pt3(0.0, 0.0, 0.0), Pt3(2.0, 1.0, 0.0))
+      b3 = new_bounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 2.0, 0.0))
+      b4 = new_bounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 1.0, 0.0))
 
     check intersect(b1, b2) == b1
     check intersect(b1, b3) == b1
@@ -60,12 +60,12 @@ suite "test bounds":
 
   test "bounds overlap":
     let
-      b1 = newBounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 1.0, 0.0))
+      b1 = new_bounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 1.0, 0.0))
 
-      b2 = newBounds(Pt3(0.0, 0.0, 0.0), Pt3(0.5, 5.0, 0.0))
-      b3 = newBounds(Pt3(0.0, 0.0, 0.0), Pt3(1.5, 0.1, 0.0))
+      b2 = new_bounds(Pt3(0.0, 0.0, 0.0), Pt3(0.5, 5.0, 0.0))
+      b3 = new_bounds(Pt3(0.0, 0.0, 0.0), Pt3(1.5, 0.1, 0.0))
 
-      b4 = newBounds(Pt3(1.1, 1.1, 0.0), Pt3(2.0, 2.0, 0.0))
+      b4 = new_bounds(Pt3(1.1, 1.1, 0.0), Pt3(2.0, 2.0, 0.0))
 
     check overlaps(b1, b2)
     check overlaps(b1, b3)
@@ -74,7 +74,7 @@ suite "test bounds":
 
   test "inside":
     let
-      b1 = newBounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 1.0, 0.0))
+      b1 = new_bounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 1.0, 0.0))
 
     check inside(b1, Pt3(1.0, 1.0, 0.0))
     check inside(b1, Pt3(0.5, 0.5, 0.0))
@@ -87,14 +87,14 @@ suite "test bounds":
 
   test "bounds expand":
     let
-      b1 = newBounds(Pt3(0.0, 0.0, 0.0))
+      b1 = new_bounds(Pt3(0.0, 0.0, 0.0))
 
     let b2 = expand(b1, 1.0)
-    check b2 == newBounds(Pt3(-1.0, -1.0, -1.0), Pt3(1.0, 1.0, 1.0))
+    check b2 == new_bounds(Pt3(-1.0, -1.0, -1.0), Pt3(1.0, 1.0, 1.0))
 
 
   test "bounds expand":
     let
-      b1 = newBounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 2.0, 3.0))
+      b1 = new_bounds(Pt3(0.0, 0.0, 0.0), Pt3(1.0, 2.0, 3.0))
 
     check diagonal(b1) == Vec3(1.0, 2.0, 3.0)

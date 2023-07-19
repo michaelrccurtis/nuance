@@ -106,26 +106,26 @@ proc build_texture(parsed: TomlTableRef): Texture[float] =
         let png = loadPNG32(parsed["image"].stringVal)
         return ImageTexture[float](image: Image.make(png))
     if texture_type == "constant":
-        return ConstantTexture[float](colour:toml_colour(parsed["colour"]))
+        return ConstantTexture[float](colour: toml_colour(parsed["colour"]))
 
-    return ConstantTexture[float](colour:Colour.make(0.0, 0.0, 0.0))
+    return ConstantTexture[float](colour: Colour.make(0.0, 0.0, 0.0))
 
 proc build_material(parsed: TomlTableRef): Material[float] =
     echo "bulding material: ", parsed
     let material_type = parsed["type"].stringVal
 
     if material_type == "glass":
-        return Glass[float](index_of_refraction:parsed["index_of_refraction"].floatVal)
+        return Glass[float](index_of_refraction: parsed["index_of_refraction"].floatVal)
     elif material_type == "lambertian":
         return Lambertian[float](
-          albedo:build_texture(parsed["albedo"].tableVal)
+          albedo: build_texture(parsed["albedo"].tableVal)
         )
     elif material_type == "metal":
         return Metal[float](
-            albedo:build_texture(parsed["albedo"].tableVal)
+            albedo: build_texture(parsed["albedo"].tableVal)
         )
 
-    return Lambertian[float](albedo: ConstantTexture[float](colour:Colour.make(0.0, 0.0, 0.0)))
+    return Lambertian[float](albedo: ConstantTexture[float](colour: Colour.make(0.0, 0.0, 0.0)))
 
 
 proc build_pimitive(parsed: TomlTableRef, meshes: MeshesTable): GeometricPrimitive[float] =
@@ -139,7 +139,7 @@ proc build_mesh(parsed: TomlTableRef): TriangleMesh[float] =
         build_transforms(tom_array_tables(parsed, "transforms")),
         toml_int_seq(parsed["vertex_indices"]),
         toml_pt3_seq(parsed["positions"])
-      )
+        )
 
 proc build_scene(parsed: TomlValueRef): Scene[float] =
 

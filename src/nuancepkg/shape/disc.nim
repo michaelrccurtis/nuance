@@ -25,7 +25,7 @@ method object_bounds*[S](disc: Disc[S]): Bounds[3, S] =
 proc surface_area*[S](disc: Disc[S]): S =
     disc.phi_max * S(0.5) * (disc.radius^2 - disc.inner_radius^2)
 
-proc make*[S](T: type Disc, radius, inner_radius : S, object_to_world: Transform[4, 4, S]): Disc[S] =
+proc make*[S](T: type Disc, radius, inner_radius: S, object_to_world: Transform[4, 4, S]): Disc[S] =
     Disc[S](
         height: S(0),
         radius: radius,

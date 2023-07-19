@@ -51,5 +51,5 @@ proc RayD3*[S](ray: Ray[3, S]): RayDifferential[3, S] {.inline.} =
       o: ray.o, d: ray.d, t_max: ray.t_max, time: ray.time, has_differentials: false
     )
 
-proc newRay*[D, S](o: Point[D, S], d: Vector[D, S]): Ray[D, S] =
+proc new_ray*[D, S](o: Point[D, S], d: Vector[D, S]): Ray[D, S] =
     Ray[D, S](o: o, d: d, time: 0, t_max: Inf)

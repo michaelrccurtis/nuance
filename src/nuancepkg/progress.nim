@@ -14,7 +14,7 @@ proc make*(T: type MultiThreadProgressBar, threads: int): MultiThreadProgressBar
         progress[t] = 0
 
     result = MultiThreadProgressBar(
-        progress:newSeq[float](threads),
+        progress: newSeq[float](threads),
         finished: false,
         setup: false
     )
@@ -38,7 +38,7 @@ proc display*(bar: MultiThreadProgressBar) =
     if bar.finished:
         total_progress = 100.0
 
-    let 
+    let
         terminal_width = terminalWidth()
         progress_bar_width = terminal_width - 30
         progress_width = int(float(progress_bar_width) * total_progress / 100)

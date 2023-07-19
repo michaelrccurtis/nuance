@@ -13,7 +13,6 @@ import shape
 {.warning[Deprecated]: off.}
 
 method get_collisions*[S](tri: Triangle[S], ray: Ray[3, S]): ShapeCollisionResult[S] =
-    # Transform to coords where ray vector is || z axis
     var
         p0 = tri.p0 - to_vector(ray.o)
         p1 = tri.p1 - to_vector(ray.o)
@@ -193,9 +192,6 @@ method get_collisions*[S](tri: Triangle[S], ray: Ray[3, S]): ShapeCollisionResul
 
 
 method collides*[S](tri: Triangle[S], ray: Ray[3, S]): bool =
-    # Transform the ray to shape coords and get the error
-
-    # Transform to coords where ray vector is || z axis
     var
         p0 = tri.p0 - to_vector(ray.o)
         p1 = tri.p1 - to_vector(ray.o)
@@ -221,7 +217,6 @@ method collides*[S](tri: Triangle[S], ray: Ray[3, S]): bool =
     p2.x = p2.x + shear_x * p2.z
     p2.y = p2.y + shear_y * p2.z
 
-    # edge function
     let
         e0 = p1.x * p2.y - p1.y * p2.x
         e1 = p2.x * p0.y - p2.y * p0.x

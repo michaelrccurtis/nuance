@@ -118,7 +118,7 @@ method get_collisions*[S](sp: Sphere[S], ray: Ray[3, S]): ShapeCollisionResult[S
           n: normal,
           dpdu: dpdu,
           dpdv: dpdv,
-          dndu: dndu, 
+          dndu: dndu,
           dndv: dndv,
           time: t_ray.time,
           shape: sp

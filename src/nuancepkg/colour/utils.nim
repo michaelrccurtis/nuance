@@ -3,13 +3,13 @@ import nuancepkg/la/vector
 type Colour* = Vector[3, float]
 
 proc make*(T: type Colour, r, g, b: float): Colour =
-    result = Colour(arr:[r, g, b])
+    result = Colour(arr: [r, g, b])
 
 proc Black*(): Colour =
-    result = Colour(arr:[0.0, 0.0, 0.0])
+    result = Colour(arr: [0.0, 0.0, 0.0])
 
 proc White*(): Colour =
-    result = Colour(arr:[1.0, 1.0, 1.0])
+    result = Colour(arr: [1.0, 1.0, 1.0])
 
 proc xyz_to_rgb*(xyz: Colour): Colour =
     xyz

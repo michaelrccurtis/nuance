@@ -29,7 +29,7 @@ task cleantests, "Clean test binaries":
 
 
 task format, "Format the source code":
-  exec "nimpretty --maxLineLen:120 --indent:4 src/**/*.nim"
+  exec "nimpretty --maxLineLen:120 --indent:4 src/nuancepkg/**/*.nim"
 
 task benchmark, "Run benchmarks":
   exec "nim c --run  utils/benchmark.nim"

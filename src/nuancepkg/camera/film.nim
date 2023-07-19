@@ -42,7 +42,7 @@ proc init_pixels*(film: Film) =
     film.pixels = pixels
 
 template deref(T: typedesc[ref|ptr]): typedesc =
-  typeof(default(T)[])
+    typeof(default(T)[])
 
 proc `=destroy`*(flm: var deref(Film)) =
     if flm.pixels != nil:
@@ -50,12 +50,12 @@ proc `=destroy`*(flm: var deref(Film)) =
 
 proc new_film*(
   full_resolution: Point[2, int]): Film =
-    let cropWindow = newBounds(
+    let cropWindow = new_bounds(
       Pt2(0.0, 0.0),
       Pt2(1.0, 1.0),
     )
     let pixel_bounds =
-        newBounds(
+        new_bounds(
           Pt2[int](
             ceil(float(full_resolution.x) * cropWindow.pMin.x).int,
             ceil(float(full_resolution.y) * cropWindow.pMin.y).int
@@ -86,7 +86,12 @@ proc save_png*(film: Film, filename: string) =
             let rgb = film[x, y].xyz
             for idx in 0 ..< scale:
                 for idy in 0 ..< scale:
-                    png_file.get_pixel(x*scale + idx, y * scale + idy).setColor(rgb_to_byte(rgb[0]), rgb_to_byte(rgb[1]), rgb_to_byte(rgb[2]), (255).uint8)
+                    png_file.get_pixel(x*scale + idx, y * scale + idy).set_color(
+                        rgb_to_byte(rgb[0]),
+                        rgb_to_byte(rgb[1]),
+                        rgb_to_byte(rgb[2]),
+                        (255).uint8
+                    )
 
     for pix in png_file.items:
         if pix.r < 0 or pix.g < 0 or pix.b < 0 or pix.a < 0:

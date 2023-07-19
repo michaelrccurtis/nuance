@@ -157,7 +157,7 @@ method collides*[S](cyl: Cylinder[S], ray: Ray[3, S]): bool =
         t_hit = t1
 
         if t_hit.v_high > t_ray.t_max:
-            return false   
+            return false
 
     var p_hit: Point[3, S] = t_ray(to_float(t_hit))
     if validate_collision(cyl, p_hit) and t0.v_low > 0:

@@ -12,7 +12,7 @@ type Metal*[S: Scalar] = ref object of Material[S]
 method `$`*[S](mat: Metal[S]): string {.base.} =
     "<Metal>"
 
-method scatter*[S](mat: Metal[S], ray: Ray[3, S], interaction: SurfaceInteraction[3, 2, S]) : MaterialScatterResult[S] =
+method scatter*[S](mat: Metal[S], ray: Ray[3, S], interaction: SurfaceInteraction[3, 2, S]): MaterialScatterResult[S] =
 
     let
         scattered_d = reflect(norm(ray.d), to_vector(interaction.n))

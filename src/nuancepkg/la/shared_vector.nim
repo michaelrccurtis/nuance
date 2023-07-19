@@ -16,7 +16,7 @@ template stringify*(vector_type: untyped): untyped =
 
 # Component wise accessors / settors
 template vector_accessors_and_setters*(vector_type: untyped): untyped =
-    
+
     proc x*[D, S](vec: vector_type[D, S]): var S {.inline.} =
         vec.arr[0]
     proc `x=`*[D, S](vec: vector_type[D, S], value: S) {.inline.} =
@@ -56,26 +56,26 @@ template vector_accessors_and_setters*(vector_type: untyped): untyped =
 
 # Component Wise Math Operators
 template componentwise_op*(vector_type: untyped, op: untyped): untyped =
-    
+
     proc op*[D, S](vec1, vec2: vector_type[D, S]): vector_type[D, S] {.inline.} =
         result = vector_type[D, S]()
         for idx in 0 ..< D:
             result.arr[idx] = op(vec1.arr[idx], vec2.arr[idx])
 
 template componentwise_opeq*(vector_type: untyped, op, opeq: untyped): untyped =
-    
+
     proc opeq*[D, S](vec1: var vector_type[D, S], vec2: vector_type[D, S]) {.inline.} =
         for idx in 0 ..< D:
             vec1.arr[idx] = op(vec1.arr[idx], vec2.arr[idx])
 
 template negation*(vector_type: untyped): untyped =
-    
+
     proc `-`*[D, S](vec: vector_type[D, S]): vector_type[D, S] {.inline.} =
         `*`(S(-1), vec)
 
 # Scalar Math Operators
 template scalar_op*(vector_type: untyped, op, opeq, opDo: untyped): untyped =
-    
+
     proc opDo*[D, S](scalar: Scalar, vec: vector_type[D, S]): vector_type[D, S] {.inline.} =
         result = vector_type[D, S]()
         for idx in 0 ..< D:
@@ -144,7 +144,7 @@ template cross_product*(vector_type: untyped): untyped =
 
 
 template permute*(vector_type: untyped): untyped =
-    
+
     proc permute*[D, S](vec: vector_type[D, S], perm: array[D, int]): vector_type[D, S] =
         result = vector_type[D, S]()
         for idx in 0 ..< D:
@@ -171,7 +171,7 @@ template permute*(vector_type: untyped): untyped =
 
 
 template max_and_min*(vector_type: untyped): untyped =
-    
+
     proc min*[D, S](vec1, vec2: vector_type[D, S]): vector_type[D, S] {.inline.} =
         result = vector_type[D, S]()
         for idx in 0 ..< D:
