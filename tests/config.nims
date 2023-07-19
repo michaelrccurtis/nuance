@@ -1,0 +1,5 @@
+switch("path", "$projectDir/../src")
+switch("warning", "Deprecated:off")
+switch("hint", "Conf:off")
+switch("hint", "Link:off")
+switch("outdir", "$projectDir/../bin/tests")

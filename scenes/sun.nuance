@@ -1,0 +1,32 @@
+[[primitives]]
+[primitives.shape]
+type = "sphere"
+[[primitives.shape.transforms]]
+type = "rotate"
+angle = 90.0
+axis = [0.0, 0.0, 1.0]
+[primitives.material]
+type = "lambertian"
+albedo = {type = "image", image = "textures/sun.png"}
+
+[[primitives]]
+[primitives.shape]
+type = "sphere"
+radius = 0.5
+[[primitives.shape.transforms]]
+type = "translate"
+vector = [1.0, 2.0, 0.0]
+[primitives.material]
+type = "glass"
+index_of_refraction = 1.5
+
+[[primitives]]
+[primitives.shape]
+type = "sphere"
+radius = 0.5
+[[primitives.shape.transforms]]
+type = "translate"
+vector = [2.0, -2.0, 0.0]
+[primitives.material]
+type = "metal"
+albedo = {type = "constant", colour = [0.8, 0.8, 0.8]}

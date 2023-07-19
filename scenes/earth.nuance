@@ -1,0 +1,36 @@
+[[primitives]]
+[primitives.shape]
+type = "sphere"
+[[primitives.shape.transforms]]
+type = "rotate"
+angle = 90.0
+axis = [0.0, 0.0, 1.0]
+[primitives.material]
+type = "lambertian"
+albedo = {type = "image", image = "textures/earth.png"}
+
+[[meshes]]
+name = "ground_mesh"
+vertex_indices = [0, 1, 2, 0, 2, 3]
+positions = [[-20.0, -20.0, 0.0], [20.0, -20.0, 0.0], [20.0, 20.0, 0.0], [-20.0, 20.0, 0.0]]
+[[meshes.transforms]]
+type = "translate"
+vector = [0.0, 0.0, -1.0]
+
+[[primitives]]
+[primitives.shape]
+type = "triangle"
+mesh = "ground_mesh"
+triangle_index = 0
+[primitives.material]
+type = "metal"
+albedo = {type = "constant", colour = [0.8, 0.8, 0.8]}
+
+[[primitives]]
+[primitives.shape]
+type = "triangle"
+mesh = "ground_mesh"
+triangle_index = 1
+[primitives.material]
+type = "metal"
+albedo = {type = "constant", colour = [0.8, 0.8, 0.8]}

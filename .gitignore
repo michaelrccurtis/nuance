@@ -1,0 +1,8 @@
+bin/
+output/
+notes/
+profile_results.txt
+
+.DS_Store
+nimcache/
+testresults/*
