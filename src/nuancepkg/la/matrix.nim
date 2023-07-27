@@ -1,4 +1,3 @@
-# import math
 import shared_vector
 import vector
 import point

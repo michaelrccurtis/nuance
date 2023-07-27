@@ -8,7 +8,7 @@ import nuancepkg/materials/all
 import nuancepkg/texture/all
 import nuancepkg/colour/all
 import nimPNG
-
+import obj_loader
 
 # Toml utilities
 proc tom_array_tables(toml: TomlTableRef, field: string): seq[TomlTableRef] =
@@ -128,7 +128,7 @@ proc build_material(parsed: TomlTableRef): Material[float] =
     return Lambertian[float](albedo: ConstantTexture[float](colour: Colour.make(0.0, 0.0, 0.0)))
 
 
-proc build_pimitive(parsed: TomlTableRef, meshes: MeshesTable): GeometricPrimitive[float] =
+proc build_primitive(parsed: TomlTableRef, meshes: MeshesTable): GeometricPrimitive[float] =
     result = GeometricPrimitive[float](
         shape: build_shape(tom_table(parsed, "shape"), meshes),
         material: build_material(tom_table(parsed, "material"))
@@ -139,7 +139,20 @@ proc build_mesh(parsed: TomlTableRef): TriangleMesh[float] =
         build_transforms(tom_array_tables(parsed, "transforms")),
         toml_int_seq(parsed["vertex_indices"]),
         toml_pt3_seq(parsed["positions"])
-        )
+    )
+
+proc build_model(parsed: TomlTableRef): seq[GeometricPrimitive[float]] =
+    let triangles = load_obj(parsed["file"].stringVal)
+
+    result = newSeq[GeometricPrimitive[float]]()
+
+    for triangle in triangles:
+        result.add(GeometricPrimitive[float](
+            shape: triangle,
+            material: Lambertian[float](
+              albedo: ConstantTexture[float](colour: Colour.make(0.5, 0.5, 0.5))
+            )
+        ))
 
 proc build_scene(parsed: TomlValueRef): Scene[float] =
 
@@ -151,7 +164,11 @@ proc build_scene(parsed: TomlValueRef): Scene[float] =
     var primitives = newSeq[GeometricPrimitive[float]]()
 
     for parsed_primitive in tom_array_tables(parsed, "primitives"):
-        primitives.add(build_pimitive(parsed_primitive, meshes))
+        primitives.add(build_primitive(parsed_primitive, meshes))
+
+    for parsed_model in tom_array_tables(parsed, "models"):
+        for primitive in build_model(parsed_model):
+            primitives.add(primitive)
 
     return Scene[float](
         primative_group: new_group(primitives)

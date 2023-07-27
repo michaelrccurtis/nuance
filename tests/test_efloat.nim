@@ -34,5 +34,3 @@ test "efloat":
 
   check x == y
   check (x + y).v == 2.0
-  echo x
-  echo x + y

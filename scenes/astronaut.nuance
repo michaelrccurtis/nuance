@@ -1,0 +1,6 @@
+[[models]]
+type = "obj"
+file = "scenes/assets/astronaut/Astronaut.obj"
+[models.material]
+type = "lambertian"
+albedo = {type = "image", image = "textures/sun.png"}

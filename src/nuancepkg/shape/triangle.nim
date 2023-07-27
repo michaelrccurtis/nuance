@@ -17,9 +17,9 @@ type
 method `$`*[S](shape: Triangle[S]): string {.base.} =
     "<Triangle>"
 
-proc v0*[S](tri: Triangle[S]): int = tri.mesh.vertexIndices[3 * tri.n_triangle]
-proc v1*[S](tri: Triangle[S]): int = tri.mesh.vertexIndices[3 * tri.n_triangle + 1]
-proc v2*[S](tri: Triangle[S]): int = tri.mesh.vertexIndices[3 * tri.n_triangle + 2]
+proc v0*[S](tri: Triangle[S]): int = tri.mesh.vertex_indices[3 * tri.n_triangle]
+proc v1*[S](tri: Triangle[S]): int = tri.mesh.vertex_indices[3 * tri.n_triangle + 1]
+proc v2*[S](tri: Triangle[S]): int = tri.mesh.vertex_indices[3 * tri.n_triangle + 2]
 
 proc p0*[S](tri: Triangle[S]): Point[3, S] = tri.mesh.positions[tri.v0]
 proc p1*[S](tri: Triangle[S]): Point[3, S] = tri.mesh.positions[tri.v1]

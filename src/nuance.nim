@@ -110,8 +110,10 @@ proc nuance(scene_path: string, resolution = 10, samples_per_pixel = 50, threads
     info("creating camera")
     let cam = new_perspective_camera(
         camera_to_world = inverse(LookAt(
-            Pt3(3.0, 4.0, 1.5),
-            Pt3(0.5, 0.5, 0.0),
+            #Pt3(3.0, 4.0, 1.5),
+            #Pt3(0.5, 0.5, 0.0),
+            Pt3(3.0, 5.0, 1.0),
+            Pt3(-1.0, 0.5, 0.0),
             Vec3(0.0, 0.0, 1.0)
         )),
         shutter_open = 0.0, shutter_close = 1.0,
