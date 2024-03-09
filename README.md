@@ -16,6 +16,26 @@ I built this to learn about both Nim and path tracing!
 
 -   Model support through .obj files
 
+## Usage
+
+nuance is run as a CLI:
+
+```
+  nuance [REQUIRED,optional-params]
+
+```
+
+It supports a number of command line options:
+
+| Option                      | Type                        | Required? | Default    | Effect                                    |
+| --------------------------- | --------------------------- | --------- | ---------- | ----------------------------------------- |
+| `-s=, --scene-path=`        | `string`                    | Yes       |            | Path to the .nuance scene file            |
+| `-r=, --resolution=`        | `int`                       | No        | 10         | Resolution                                |
+| `--samples-per-pixel=`      | `int`                       | No        | 50         | Samples per pixel                         |
+| `-t=, --threads=`           | `int`                       | No        | 10         | Threads to use                            |
+| `-p=, --parallel-strategy=` | `ps-samples`, `ps_x_blocks` | No        | ps-samples | Select the strategy for parallelisation   |
+| `--preview `                | `bool`                      | No        | false      | Whether to render a (very speedy) preview |
+
 ## Examples
 
 ![Shape primitives](examples/sphere_cylinder_colours.png?raw=true "Shape primitives")
