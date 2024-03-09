@@ -18,7 +18,9 @@ I built this to learn about both Nim and path tracing!
 
 ## Examples
 
+![Shape primitives](examples/sphere_cylinder_colours.png?raw=true "Shape primitives")
 ![Sun and Glass](examples/sun_and_glass.png?raw=true "Sun and Glass render")
+![Globe reflection](examples/globe_reflection.png?raw=true "Globe reflection")
 
 ### Assets:
 
