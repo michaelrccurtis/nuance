@@ -11,7 +11,7 @@ type Glass*[S: Scalar] = ref object of Material[S]
 method `$`*[S](mat: Glass[S]): string {.base.} =
     "<Glass>"
 
-method scatter*[S](mat: Glass[S], ray: Ray[3, S], interaction: SurfaceInteraction[3, 2, S]): MaterialScatterResult[S] =
+method scatter*[S](mat: Glass[S], ray: Ray[3, S], interaction: SurfaceInteraction[3, 2, S]): MaterialScatterResult[S] {.gcsafe.} =
 
     let
         outside = dot(ray.d, interaction.n) < 0.0

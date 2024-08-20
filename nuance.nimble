@@ -14,6 +14,7 @@ requires "nim >= 1.6.6"
 requires "simplepng"
 requires "cligen"
 requires "toml_serialization"
+requires "malebolgia"
 
 import os
 import std/strformat

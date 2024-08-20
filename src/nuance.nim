@@ -1,8 +1,9 @@
 import os
-import std/[strformat, times, random, threadpool, math, logging]
+import std/[strformat, times, random, math, logging]
 import strutils
 import sequtils
 import cligen
+import malebolgia
 import nuancepkg/la/all
 import nuancepkg/camera/all
 import nuancepkg/collisions/all
@@ -11,9 +12,6 @@ import nuancepkg/materials/all
 import nuancepkg/shape/all
 import nuancepkg/colour/all
 import nuancepkg/progress
-
-{.experimental: "parallel".}
-
 
 # Configure logging
 var logger = new_console_logger(fmtStr = "\e[0;35m[nuance]\e[0m $time - \e[32m$levelname\e[0m: ")
@@ -27,7 +25,7 @@ randomize()
 var progress_channel: Channel[tuple[thread_id: int, progress:float, complete: bool]]
 
 
-proc ray_colour(ray: Ray[3, float], group: PrimitiveGroup[float], depth: int, max_depth: int = 50): Colour =
+proc ray_colour(ray: Ray[3, float], group: PrimitiveGroup[float], depth: int, max_depth: int = 50): Colour {.gcsafe.} =
     if depth > max_depth:
         return Black()
 
@@ -72,22 +70,22 @@ proc preview[S](group: PrimitiveGroup[S], cam: PerspectiveCamera[S], x, y : int)
 
 proc write_patch_to_film[S](
     thread_id: int,
-    group: PrimitiveGroup[S],
-    cam: PerspectiveCamera[S],
+    group: ptr PrimitiveGroup[S],
+    cam: ptr PerspectiveCamera[S],
     samples_per_pixel: int,
-    bounds: Bounds[2, int],
+    bounds: ptr Bounds[2, int],
     preview: bool = false
-): seq[seq[Colour]] =
-    result = newSeqWith(bounds.p_max.x - bounds.p_min.x, newSeqWith(bounds.p_max.y - bounds.p_min.y, Vec3(0.0, 0.0, 0.0)))
+): seq[seq[Colour]] {.thread.}=
+    result = newSeqWith(bounds[].p_max.x - bounds[].p_min.x, newSeqWith(bounds[].p_max.y - bounds[].p_min.y, Vec3(0.0, 0.0, 0.0)))
 
-    for x in bounds.p_min.x ..< bounds.p_max.x:
-        let progress = float(x - bounds.p_min.x) / float(bounds.p_max.x - bounds.p_min.x)
+    for x in bounds[].p_min.x ..< bounds[].p_max.x:
+        let progress = float(x - bounds[].p_min.x) / float(bounds[].p_max.x - bounds[].p_min.x)
         progress_channel.send((thread_id, progress, false))
-        for y in bounds.p_min.y ..< bounds.p_max.y:
+        for y in bounds[].p_min.y ..< bounds[].p_max.y:
             if preview:
-                result[x-bounds.p_min.x][y-bounds.p_min.y] = preview(group, cam, x, y)
+                result[x-bounds[].p_min.x][y-bounds[].p_min.y] = preview(group[], cam[], x, y)
             else:
-                result[x-bounds.p_min.x][y-bounds.p_min.y] = sample_film(group, cam, x, y, samples_per_pixel)
+                result[x-bounds[].p_min.x][y-bounds[].p_min.y] = sample_film(group[], cam[], x, y, samples_per_pixel)
     
     progress_channel.send((thread_id, 1.0, true))
 
@@ -122,7 +120,7 @@ proc nuance(scene_path: string, resolution = 10, samples_per_pixel = 50, threads
         film = flm,
     )
 
-    info("loading scene")
+    info(fmt"loading scene from {scene_path}")
     var scene = load_scene(scene_path)
     #var scene = earth()
 
@@ -153,7 +151,7 @@ proc nuance(scene_path: string, resolution = 10, samples_per_pixel = 50, threads
 
     var
         thread_ranges = newSeq[Bounds[2, int]](threads)
-        outputs = newSeq[FlowVar[seq[seq[Colour]]]](threads)
+        outputs = newSeq[seq[seq[Colour]]](threads)
         running_threads = 0
 
     for thread in 0 .. thread_ranges.high:
@@ -173,44 +171,44 @@ proc nuance(scene_path: string, resolution = 10, samples_per_pixel = 50, threads
 
     progress_channel.open()
 
-    {. warning[IndexCheck]:off.}: # cf https://github.com/nim-lang/Nim/issues/3528
-        parallel:
-            for t in 0 ..< threads:
-                debug(fmt"spawning thread {t+1} / {threads}")
-                let thread_bounds = thread_ranges[t]
+    var m = createMaster()
+
+    m.awaitAll:
+        for t in 0 ..< threads:
+            debug(fmt"spawning thread {t+1} / {threads}")
+            let thread_bounds = thread_ranges[t]
+            
+            if not flm.pixel_bounds.overlaps(thread_bounds):
+                debug(fmt"thread {t+1} not spawned: bounds {thread_bounds} do not overlap with film")
+                break
+
+            debug(fmt"thread {t+1}: {thread_bounds}")
+            m.spawn write_patch_to_film(
+                t,
+                addr scene.primative_group,
+                addr cam,
+                samples_per_pixel_per_thread,
+                bounds=addr thread_ranges[t],
+                preview=preview
+            ) -> outputs[t]
+            running_threads += 1
+
+        var threads_complete = 0
+        let progress = MultiThreadProgressBar.make(running_threads)
+
+        while true:
+            progress.display()
+
+            let listen = progress_channel.tryRecv()
+            if listen.dataAvailable:
+                progress.update(listen.msg.thread_id, listen.msg.progress * 100)
+
+                if listen.msg.complete:
+                    threads_complete += 1
                 
-                if not flm.pixel_bounds.overlaps(thread_bounds):
-                    debug(fmt"thread {t+1} not spawned: bounds {thread_bounds} do not overlap with film")
-                    break
-
-                debug(fmt"thread {t+1}: {thread_bounds}")
-                outputs[t] = spawn write_patch_to_film(
-                    t,
-                    scene.primative_group,
-                    cam,
-                    samples_per_pixel_per_thread,
-                    bounds=thread_bounds,
-                    preview=preview
-                )
-                running_threads += 1
-
-            var threads_complete = 0
-            let progress = MultiThreadProgressBar.make(running_threads)
-
-            while true:
-                progress.display()
-
-                let listen = progress_channel.tryRecv()
-                if listen.dataAvailable:
-                    progress.update(listen.msg.thread_id, listen.msg.progress * 100)
-
-                    if listen.msg.complete:
-                        threads_complete += 1
-                    
-                if threads_complete == running_threads:
-                    progress.finish()
-                    break
-
+            if threads_complete == running_threads:
+                progress.finish()
+                break
 
     scale *= running_threads / threads
 
@@ -238,7 +236,8 @@ proc nuance(scene_path: string, resolution = 10, samples_per_pixel = 50, threads
                         flm[x, y].xyz[idx] += scale * output[x][y][idx]
                 
         # Avoids copying - much faster than output = ^outputs[t] for large outputs
-        await_and_then(outputs[t], write)
+        write(outputs[t])
+        #await_and_then(outputs[t], write)
 
     info(fmt"writing to film complete in {getTime() - time}")
 
@@ -253,5 +252,7 @@ proc nuance(scene_path: string, resolution = 10, samples_per_pixel = 50, threads
         flm.save_png(fmt"./output/{file[1]}_preview_{ts}.png")
     else:
         flm.save_png(fmt"./output/{file[1]}_{ts}.png")
+
+    info("all done...")
 
 dispatch nuance

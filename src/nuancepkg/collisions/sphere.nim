@@ -96,7 +96,8 @@ method get_collisions*[S](sp: Sphere[S], ray: Ray[3, S]): ShapeCollisionResult[S
     if sp.transform_swaps_handedness:
         normal = -S(1) * normal
 
-    normal = norm(sp.object_to_world(normal))
+    let tn = sp.object_to_world(normal)
+    normal = norm(tn)
 
     let
         invEGF2 = S(1) / (E * G - F * F)
@@ -121,12 +122,12 @@ method get_collisions*[S](sp: Sphere[S], ray: Ray[3, S]): ShapeCollisionResult[S
           dndu: dndu,
           dndv: dndv,
           time: t_ray.time,
-          shape: sp
+          #shape: sphre
         )
-
     return ShapeCollisionResult[S](
-      collides: true, t_hit: to_float(t_hit), interaction: interaction
+        collides: true, t_hit: to_float(t_hit), interaction: interaction
     )
+    
 
 method collides*[S](sp: Sphere[S], ray: Ray[3, S]): bool =
     let

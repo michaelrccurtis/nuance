@@ -123,7 +123,7 @@ method get_collisions*[S](tri: Triangle[S], ray: Ray[3, S]): ShapeCollisionResul
     var interaction = SurfaceInteraction[3, 2, S](
         p: p_hit, p_error: p_error, uv: uv_hit, wo: (-ray.d),
         dpdu: dpdu, dpdv: dpdv, dndu: ZerosNorm[3, S](), dndv: ZerosNorm[3, S](),
-        time: ray.time, shape: tri
+        time: ray.time, #shape: tri
     )
 
     let n = to_normal_cast(norm(dp02 *^ dp12))

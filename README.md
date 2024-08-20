@@ -22,7 +22,6 @@ nuance is run as a CLI:
 
 ```
   nuance [REQUIRED,optional-params]
-
 ```
 
 It supports a number of command line options:

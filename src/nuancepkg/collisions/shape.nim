@@ -10,7 +10,7 @@ type
     ShapeCollisionResult*[S: Scalar] = ref object of CollisionResult[3, S]
         interaction*: SurfaceInteraction[3, 2, S]
 
-method get_collisions*[S](shape: Shape[S], ray: Ray[3, S]): ShapeCollisionResult[S] {.base.} =
+method get_collisions*[S](shape: Shape[S], ray: Ray[3, S]): ShapeCollisionResult[S] {.base gcsafe.} =
     ShapeCollisionResult[S](collides: false)
 
 method collides*[S](shape: Shape[S], ray: Ray[3, S]): bool {.base.} =

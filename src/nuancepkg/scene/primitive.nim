@@ -16,7 +16,7 @@ method `$`*[S](prim: Primitive[S]): string {.base.} =
 method world_bounds*[S](primitive: Primitive[S]): Bounds[3, S] {.base.} =
     return Bounds[3, S]()
 
-method get_collisions*[S](primitive: Primitive[S], ray: Ray[3, S]): CollisionResult[3, S] {.base.} =
+method get_collisions*[S](primitive: Primitive[S], ray: Ray[3, S]): CollisionResult[3, S] {.base gcsafe.} =
     return CollisionResult[3, S]()
 
 method collides*[S](primitive: Primitive[S], ray: Ray[3, S]): bool {.base.} =
@@ -45,7 +45,7 @@ proc make*[S](T: type GeometricPrimitive, shape: Shape[S], mat: Material[S]): Ge
 method world_bounds*[S](primitive: GeometricPrimitive[S]): Bounds[3, S] =
     primitive.shape.world_bounds
 
-method get_collisions*[S](primitive: GeometricPrimitive[S], ray: Ray[3, S]): ShapeCollisionResult[S] {.base.} =
+method get_collisions*[S](primitive: GeometricPrimitive[S], ray: Ray[3, S]): ShapeCollisionResult[S] {.base gcsafe.} =
     primitive.shape.get_collisions(ray)
 
 method collides*[S](primitive: GeometricPrimitive[S], ray: Ray[3, S]): bool =
@@ -59,7 +59,7 @@ proc new_group*[S](primitives: seq[GeometricPrimitive[S]]): PrimitiveGroup[S] =
       primitives: primitives
     )
 
-method get_collisions*[S](group: PrimitiveGroup[S], ray: Ray[3, S]): PrimitiveScatteringResult[S] {.base.} =
+method get_collisions*[S](group: PrimitiveGroup[S], ray: Ray[3, S]): PrimitiveScatteringResult[S] {.base gcsafe.} =
     var
         collides = false
         collision_result: PrimitiveScatteringResult[S]

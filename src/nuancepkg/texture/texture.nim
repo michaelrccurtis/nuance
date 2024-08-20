@@ -11,5 +11,5 @@ type
 method `$`*[S](text: Texture[S]): string {.base.} =
     "<BaseTexture>"
 
-method interaction_colour*[S](text: Texture[S], interaction: SurfaceInteraction[3, 2, S]): Colour {.base.} =
+method interaction_colour*[S](text: Texture[S], interaction: SurfaceInteraction[3, 2, S]): Colour {.base gcsafe.} =
     result = White()

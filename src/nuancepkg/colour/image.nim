@@ -36,6 +36,6 @@ proc make*(T: type Image, png: PNGResult[string]): Image =
 template deref(T: typedesc[ref|ptr]): typedesc =
     typeof(default(T)[])
 
-proc `=destroy`*(img: var deref(Image)) =
+proc `=destroy`*(img: deref(Image)) =
     if img.pixels != nil:
         deallocShared(img.pixels)
