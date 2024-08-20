@@ -26,13 +26,16 @@ proc load_obj*(obj_file: string): auto =
 
         if processed[0] == "v":
             vertices.add(Pt3(parse_float(processed[1]), parse_float(processed[2]), parse_float(processed[3])))
-        
+
         if processed[0] == "f":
             if len(processed) == 4:
-                faces.add([parse_face_vertex(processed[1]), parse_face_vertex(processed[2]), parse_face_vertex(processed[3])])
+                faces.add([parse_face_vertex(processed[1]), parse_face_vertex(processed[2]), parse_face_vertex(
+                        processed[3])])
             elif len(processed) == 5:
-                faces.add([parse_face_vertex(processed[1]), parse_face_vertex(processed[2]), parse_face_vertex(processed[3])])
-                faces.add([parse_face_vertex(processed[1]), parse_face_vertex(processed[3]), parse_face_vertex(processed[4])])
+                faces.add([parse_face_vertex(processed[1]), parse_face_vertex(processed[2]), parse_face_vertex(
+                        processed[3])])
+                faces.add([parse_face_vertex(processed[1]), parse_face_vertex(processed[3]), parse_face_vertex(
+                        processed[4])])
             else:
                 echo "unexpected number of face vertices"
 

@@ -127,7 +127,7 @@ method get_collisions*[S](sp: Sphere[S], ray: Ray[3, S]): ShapeCollisionResult[S
     return ShapeCollisionResult[S](
         collides: true, t_hit: to_float(t_hit), interaction: interaction
     )
-    
+
 
 method collides*[S](sp: Sphere[S], ray: Ray[3, S]): bool =
     let

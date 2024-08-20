@@ -16,5 +16,6 @@ type
 method `$`*[S](mat: Material[S]): string {.base.} =
     "<BaseMaterial>"
 
-method scatter*[S](mat: Material[S], ray: Ray[3, S], interation: SurfaceInteraction[3, 2, S]): MaterialScatterResult[S] {.base gcsafe.} =
+method scatter*[S](mat: Material[S], ray: Ray[3, S], interation: SurfaceInteraction[3, 2, S]): MaterialScatterResult[
+        S] {.base gcsafe.} =
     result = MaterialScatterResult[S](scattered: false)

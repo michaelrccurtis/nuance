@@ -13,7 +13,7 @@ type Lambertian*[S: Scalar] = ref object of Material[S]
 method `$`*[S](mat: Lambertian[S]): string {.base.} =
     "<Lambertian>"
 
-method scatter*[S](mat: Lambertian[S], ray: Ray[3, S], interaction: SurfaceInteraction[3, 2, S]): MaterialScatterResult[S]  {.gcsafe.} =
+method scatter*[S](mat: Lambertian[S], ray: Ray[3, S], interaction: SurfaceInteraction[3, 2, S]): MaterialScatterResult[S] {.gcsafe.} =
 
     let
         rand = Vec3OnUnitSphere()
