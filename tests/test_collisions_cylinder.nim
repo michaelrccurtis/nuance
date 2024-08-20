@@ -1,12 +1,12 @@
 import unittest
-import nuancepkg/shape/shape
-import nuancepkg/shape/cylinder
-import nuancepkg/collisions/collisions
-import nuancepkg/collisions/cylinder as cylinder_collisions
-import nuancepkg/la/vector
-import nuancepkg/la/ray
-import nuancepkg/la/point
-import nuancepkg/la/transform
+import nuance/shape/shape
+import nuance/shape/cylinder
+import nuance/collisions/collisions
+import nuance/collisions/cylinder as cylinder_collisions
+import nuance/la/vector
+import nuance/la/ray
+import nuance/la/point
+import nuance/la/transform
 
 
 test "cylinder collisions":

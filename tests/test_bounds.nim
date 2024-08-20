@@ -1,7 +1,7 @@
 import unittest
-import nuancepkg/la/bounds
-import nuancepkg/la/point
-import nuancepkg/la/vector
+import nuance/la/bounds
+import nuance/la/point
+import nuance/la/vector
 
 suite "test bounds":
   test "bounds init":

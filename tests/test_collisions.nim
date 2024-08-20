@@ -1,10 +1,10 @@
 import unittest
-import nuancepkg/collisions/collisions
-import nuancepkg/collisions/bounds as bounds_collision
-import nuancepkg/la/bounds
-import nuancepkg/la/ray
-import nuancepkg/la/point
-import nuancepkg/la/vector
+import nuance/collisions/collisions
+import nuance/collisions/bounds as bounds_collision
+import nuance/la/bounds
+import nuance/la/ray
+import nuance/la/point
+import nuance/la/vector
 
 test "ray -> bounds collision":
   let

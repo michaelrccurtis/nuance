@@ -1,14 +1,14 @@
 import unittest
-import nuancepkg/la/point
-import nuancepkg/la/vector
-import nuancepkg/la/normal
-import nuancepkg/la/transform
-import nuancepkg/la/bounds
-import nuancepkg/la/ray
-import nuancepkg/shape/triangle_mesh
-import nuancepkg/shape/triangle
-import nuancepkg/collisions/collisions
-import nuancepkg/collisions/triangle as triangle_collisions
+import nuance/la/point
+import nuance/la/vector
+import nuance/la/normal
+import nuance/la/transform
+import nuance/la/bounds
+import nuance/la/ray
+import nuance/shape/triangle_mesh
+import nuance/shape/triangle
+import nuance/collisions/collisions
+import nuance/collisions/triangle as triangle_collisions
 
 test "triangle collisions":
   let

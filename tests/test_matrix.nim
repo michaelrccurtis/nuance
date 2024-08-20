@@ -1,9 +1,9 @@
 import unittest
-import nuancepkg/la/matrix
-import nuancepkg/la/transform
-import nuancepkg/la/vector
-import nuancepkg/la/point
-import nuancepkg/la/bounds
+import nuance/la/matrix
+import nuance/la/transform
+import nuance/la/vector
+import nuance/la/point
+import nuance/la/bounds
 
 
 test "matrix multiplication":

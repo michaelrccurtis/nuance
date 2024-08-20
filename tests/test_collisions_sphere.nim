@@ -1,9 +1,9 @@
 import unittest
-import nuancepkg/shape/shape
-import nuancepkg/shape/sphere
-import nuancepkg/collisions/collisions
-import nuancepkg/collisions/sphere as sphere_collisions
-import nuancepkg/la/all
+import nuance/shape/shape
+import nuance/shape/sphere
+import nuance/collisions/collisions
+import nuance/collisions/sphere as sphere_collisions
+import nuance/la/all
 
 
 test "sphere collisions":

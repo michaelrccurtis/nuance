@@ -4,14 +4,14 @@ import strutils
 import sequtils
 import cligen
 import malebolgia
-import nuancepkg/la/all
-import nuancepkg/camera/all
-import nuancepkg/collisions/all
-import nuancepkg/scene/all
-import nuancepkg/materials/all
-import nuancepkg/shape/all
-import nuancepkg/colour/all
-import nuancepkg/progress
+import nuance/la/all
+import nuance/camera/all
+import nuance/collisions/all
+import nuance/scene/all
+import nuance/materials/all
+import nuance/shape/all
+import nuance/colour/all
+import nuance/progress
 
 # Configure logging
 var logger = new_console_logger(fmtStr = "\e[0;35m[nuance]\e[0m $time - \e[32m$levelname\e[0m: ")

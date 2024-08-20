@@ -1,7 +1,7 @@
 import unittest
-import nuancepkg/la/point
-import nuancepkg/la/vector
-import nuancepkg/la/ray
+import nuance/la/point
+import nuance/la/vector
+import nuance/la/ray
 
 
 test "ray creation and interpolation":

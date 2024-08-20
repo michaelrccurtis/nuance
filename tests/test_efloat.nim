@@ -1,7 +1,7 @@
 import unittest
-import nuancepkg/math/efloat
-import nuancepkg/math/fp
-import nuancepkg/math/quadratic
+import nuance/math/efloat
+import nuance/math/fp
+import nuance/math/quadratic
 
 test "float to bits":
   let
