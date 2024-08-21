@@ -1,4 +1,5 @@
 import strutils
+import std/logging
 import nuance/la/all
 import nuance/shape/all
 
@@ -9,7 +10,7 @@ proc parse_face_vertex(face: string): int =
 
 
 proc load_obj*(obj_file: string): auto =
-    echo "loading: ", obj_file
+    info("loading obj: ", obj_file)
     var
         vertices = newSeq[Point[3, float]]()
         faces = newSeq[array[3, int]]()

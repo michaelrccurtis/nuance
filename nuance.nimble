@@ -15,6 +15,7 @@ requires "simplepng"
 requires "cligen"
 requires "toml_serialization"
 requires "malebolgia"
+requires "threading"
 
 import os
 import std/strformat

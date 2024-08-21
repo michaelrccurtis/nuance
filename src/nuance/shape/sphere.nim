@@ -13,7 +13,7 @@ type
         z_min*, z_max*: S
         theta_min*, theta_max*, phi_max*: S
 
-method `$`*[S](shape: Sphere[S]): string {.base.} =
+method `$`*[S](shape: Sphere[S]): string =
     "<Sphere>"
 
 method object_bounds*[S](sphere: Sphere[S]): Bounds[3, S] =

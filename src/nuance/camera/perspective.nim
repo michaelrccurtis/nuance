@@ -1,4 +1,5 @@
 import math
+import std/[logging, isolation]
 import nuance/la/transform
 import nuance/la/ray
 import nuance/la/point
@@ -10,7 +11,7 @@ import camera
 import projective
 
 type
-    PerspectiveCamera*[S] = ref object of ProjectiveCamera[S]
+    PerspectiveCamera*[S] {.sendable.} = ref object of ProjectiveCamera[S]
         dx_camera*, dy_camera*: Vector[3, S]
         A: S
 
@@ -22,8 +23,11 @@ proc new_perspective_camera*[S](
   lens_radius,
   focal_distance,
   fov: S,
-  film: Film,
-): PerspectiveCamera[S] =
+  full_resolution: Point[2, int],
+): Isolated[PerspectiveCamera[S]] =
+
+    info(fmt"creating film width: {full_resolution.x} height: {full_resolution.y}")
+    let film = new_film(full_resolution=full_resolution)
 
     var camera = PerspectiveCamera[float].init(
       camera_to_world,
@@ -48,7 +52,7 @@ proc new_perspective_camera*[S](
     p_max = p_max / p_max.z
 
     camera.A = abs((p_max.x - p_min.x) * (p_max.y - p_min.y))
-    return camera
+    return unsafeIsolate(camera)
 
 proc concentric_sample_disc[S](u: Point[2, S]): Point[2, S] =
     let u_offset = S(2) * u - Vec2(S(1), S(1))

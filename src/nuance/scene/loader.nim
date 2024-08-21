@@ -1,7 +1,8 @@
 import toml_serialization
-import std/tables
+import std/[strformat, tables, logging, isolation]
 import primitive
 import scene
+import bvh_tree
 import nuance/la/all
 import nuance/shape/all
 import nuance/materials/all
@@ -69,7 +70,7 @@ proc build_transform(parsed_transform: TomlTableRef): Transform[4, 4, float] =
     elif transform_type == "rotate":
         return Rotate(parsed_transform["angle"].floatVal, toml_vec3(parsed_transform["axis"]))
 
-    echo "Unimplemented transform type ", transform_type
+    error("Unimplemented transform type ", transform_type)
 
     return NoTransform[float]()
 
@@ -80,7 +81,6 @@ proc build_transforms(parsed_transforms: seq[TomlTableRef]): Transform[4, 4, flo
 
 
 proc build_shape(parsed: TomlTableRef, meshes: MeshesTable): Shape[float] =
-    echo "building shape: ", parsed
     let shape_type = parsed["type"].stringVal
 
     if shape_type == "sphere":
@@ -96,7 +96,7 @@ proc build_shape(parsed: TomlTableRef, meshes: MeshesTable): Shape[float] =
             int(parsed["triangle_index"].intVal)
         )
 
-    echo "Unimplemented shape type ", shape_type
+    error("Unimplemented shape type ", shape_type)
 
 
 proc build_texture(parsed: TomlTableRef): Texture[float] =
@@ -111,7 +111,6 @@ proc build_texture(parsed: TomlTableRef): Texture[float] =
     return ConstantTexture[float](colour: Colour.make(0.0, 0.0, 0.0))
 
 proc build_material(parsed: TomlTableRef): Material[float] =
-    echo "bulding material: ", parsed
     let material_type = parsed["type"].stringVal
 
     if material_type == "glass":
@@ -154,7 +153,9 @@ proc build_model(parsed: TomlTableRef): seq[GeometricPrimitive[float]] =
             )
         ))
 
-proc build_scene(parsed: TomlValueRef): Scene[float] =
+proc build_scene(parsed: TomlValueRef): Isolated[Scene[float]] =
+
+    info(fmt"building scene")
 
     var meshes = initTable[string, TriangleMesh[float]]()
 
@@ -170,12 +171,17 @@ proc build_scene(parsed: TomlValueRef): Scene[float] =
         for primitive in build_model(parsed_model):
             primitives.add(primitive)
 
-    return Scene[float](
-        primative_group: new_group(primitives)
-    )
+    let group = new_group(primitives)
+
+    let bvh_root = build_bvh(primitives)
+
+    return unsafeIsolate(Scene[float](
+        primative_group: group,
+        bvh_root: bvh_root
+    ))
 
 
-proc load_scene*(path: string): Scene[float] =
+proc load_scene*(path: string): Isolated[Scene[float]] =
     try:
         let loaded_scene = Toml.loadFile(path, TomlValueRef)
         result = build_scene(loaded_scene)

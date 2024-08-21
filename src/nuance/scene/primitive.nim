@@ -1,5 +1,6 @@
 import std/strformat
 import nuance/la/shared_vector
+import nuance/la/point
 import nuance/la/bounds
 import nuance/la/ray
 import nuance/shape/shape
@@ -23,7 +24,7 @@ method collides*[S](primitive: Primitive[S], ray: Ray[3, S]): bool {.base.} =
     return false
 
 type
-    GeometricPrimitive*[S] = ref object of Primitive[S]
+    GeometricPrimitive*[S] = object of RootObj
         shape*: Shape[S]
         material*: Material[S]
 
@@ -33,7 +34,7 @@ type
         interaction*: SurfaceInteraction[3, 2, S]
         primitive*: GeometricPrimitive[S]
 
-method `$`*[S](prim: GeometricPrimitive[S]): string {.base.} =
+method `$`*[S](prim: GeometricPrimitive[S]): string =
     fmt"<GeometricPrimative shape={prim.shape} material={prim.material}>"
 
 proc make*[S](T: type GeometricPrimitive, shape: Shape[S]): GeometricPrimitive[S] =
@@ -45,7 +46,10 @@ proc make*[S](T: type GeometricPrimitive, shape: Shape[S], mat: Material[S]): Ge
 method world_bounds*[S](primitive: GeometricPrimitive[S]): Bounds[3, S] =
     primitive.shape.world_bounds
 
-method get_collisions*[S](primitive: GeometricPrimitive[S], ray: Ray[3, S]): ShapeCollisionResult[S] {.base gcsafe.} =
+method centroid*[S](primitive: GeometricPrimitive[S]): Point[3, S] =
+    return S(0.5) * primitive.world_bounds.p_min + S(0.5) * primitive.world_bounds.p_max
+
+method get_collisions*[S](primitive: GeometricPrimitive[S], ray: Ray[3, S]): ShapeCollisionResult[S] {.gcsafe.} =
     primitive.shape.get_collisions(ray)
 
 method collides*[S](primitive: GeometricPrimitive[S], ray: Ray[3, S]): bool =
@@ -53,10 +57,13 @@ method collides*[S](primitive: GeometricPrimitive[S], ray: Ray[3, S]): bool =
 
 type PrimitiveGroup*[S] = ref object of Primitive[S]
     primitives*: seq[GeometricPrimitive[S]]
+    #primitives*: ptr UncheckedArray[GeometricPrimitive[S]]
+    n_primitives*: int
 
 proc new_group*[S](primitives: seq[GeometricPrimitive[S]]): PrimitiveGroup[S] =
-    PrimitiveGroup[S](
-      primitives: primitives
+    return PrimitiveGroup[S](
+      primitives: primitives,
+      n_primitives: len(primitives)
     )
 
 method get_collisions*[S](group: PrimitiveGroup[S], ray: Ray[3, S]): PrimitiveScatteringResult[S] {.base gcsafe.} =
@@ -64,7 +71,8 @@ method get_collisions*[S](group: PrimitiveGroup[S], ray: Ray[3, S]): PrimitiveSc
         collides = false
         collision_result: PrimitiveScatteringResult[S]
 
-    for primitive in group.primitives:
+    for idx in 0 ..< group.n_primitives:
+        let primitive = group.primitives[idx]
         if primitive.shape.world_bounds.collides(ray):
             let collision = primitive.get_collisions(ray)
             if collision.collides:
@@ -82,7 +90,8 @@ method get_collisions*[S](group: PrimitiveGroup[S], ray: Ray[3, S]): PrimitiveSc
     return PrimitiveScatteringResult[S](collides: false)
 
 method collides*[S](group: PrimitiveGroup[S], ray: Ray[3, S]): tuple[collides: bool, index: int] {.base.} =
-    for idx, primitive in group.primitives:
+    for idx in 0 ..< group.n_primitives:
+        let primitive = group.primitives[idx]
         if primitive.collides(ray):
             return (true, idx)
     return (false, -1)

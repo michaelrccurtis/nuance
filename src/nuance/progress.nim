@@ -21,8 +21,8 @@ proc make*(T: type MultiThreadProgressBar, threads: int): MultiThreadProgressBar
 
 proc total_progress(bar: MultiThreadProgressBar): float =
     result = 0.0
-    for thread in 0 ..< bar.progress.high:
-        result += bar.progress[thread] / float(bar.progress.high)
+    for thread in 0 ..< len(bar.progress):
+        result += bar.progress[thread] / float(len(bar.progress))
 
 proc update*(bar: MultiThreadProgressBar, thread: int, progress: float) =
     bar.progress[thread] = progress

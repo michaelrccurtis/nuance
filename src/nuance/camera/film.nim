@@ -33,7 +33,7 @@ proc `[]`*(film: Film, x, y: int): var Pixel =
 
 proc init_pixels*(film: Film) =
     var
-        memory = alloc(film.pixel_bounds.surfaceArea * sizeof(Pixel))
+        memory = allocShared0(film.pixel_bounds.surfaceArea * sizeof(Pixel))
         pixels = cast[ptr UncheckedArray[Pixel]](memory)
     for idx in 0 ..< film.pixel_bounds.surfaceArea:
         pixels[idx] = Pixel(
@@ -44,7 +44,8 @@ proc init_pixels*(film: Film) =
 template deref(T: typedesc[ref|ptr]): typedesc =
     typeof(default(T)[])
 
-proc `=destroy`*(flm: var deref(Film)) =
+proc `=destroy`*(flm: deref(Film)) =
+    info("dealloc film pixels")
     if flm.pixels != nil:
         dealloc(flm.pixels)
 
@@ -76,7 +77,7 @@ proc save_png*(film: Film, filename: string) =
     if film.width < 500:
         scale = int(ceil(500/film.width))
 
-    info(fmt"outputting png at {scale}x scale")
+    info(fmt"Outputting png at {scale}x scale to file {filename}")
 
     var png_file = init_pixels(film.width * scale, film.height * scale)
     png_file.fill(255, 255, 255, 255)

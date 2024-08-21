@@ -14,7 +14,7 @@ type
         mesh*: TriangleMesh[S]
         n_triangle: int
 
-method `$`*[S](shape: Triangle[S]): string {.base.} =
+method `$`*[S](shape: Triangle[S]): string =
     "<Triangle>"
 
 proc v0*[S](tri: Triangle[S]): int = tri.mesh.vertex_indices[3 * tri.n_triangle]
