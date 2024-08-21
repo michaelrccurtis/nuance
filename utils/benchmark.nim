@@ -1,8 +1,8 @@
 #import nimprof
 import std/[strformat, times, logging]
-import nuancepkg/la/all
-import nuancepkg/shape/all
-import nuancepkg/collisions/all
+import nuance/la/all
+import nuance/shape/all
+import nuance/collisions/all
 
 # Configure logging
 var logger = newConsoleLogger(fmtStr = "\e[0;35m[nuance benchmark]\e[0m $time - \e[32m$levelname\e[0m: ")

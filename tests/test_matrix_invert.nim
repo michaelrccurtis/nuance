@@ -1,5 +1,5 @@
 import unittest
-import nuancepkg/la/matrix
+import nuance/la/matrix
 
 test "matrix invert":
   let

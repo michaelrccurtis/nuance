@@ -1,5 +1,5 @@
 import unittest
-import nuancepkg/la/vector
+import nuance/la/vector
 
 
 test "vector creation and access":

@@ -1,8 +1,8 @@
 import unittest
-import nuancepkg/scene/all
-import nuancepkg/shape/all
-import nuancepkg/la/all
-import nuancepkg/collisions/all
+import nuance/scene/all
+import nuance/shape/all
+import nuance/la/all
+import nuance/collisions/all
 
 test "geometric primitive":
 

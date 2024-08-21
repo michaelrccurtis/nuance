@@ -1,6 +1,6 @@
 import unittest
-import nuancepkg/la/normal
-import nuancepkg/la/vector
+import nuance/la/normal
+import nuance/la/vector
 
 
 template notCompiles*(e: untyped): untyped =
